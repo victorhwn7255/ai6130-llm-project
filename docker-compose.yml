@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8000"
+    env_file: .env
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+      - ./utils:/app/utils
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3030:3000"
+    env_file: .env
+    depends_on:
+      backend:
+        condition: service_healthy

@@ -1,0 +1,59 @@
+# Data
+data/raw/*.jsonl
+data/labeled/*.jsonl
+data/models/*/
+data/models/*.pkl
+data/results/*.json
+data/results/*.png
+*.db
+
+# Environment
+.env
+.env.local
+.env*.local
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+.next/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Claude
+CLAUDE.md
+tasks/
+
+# Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node/TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# Docker
+*.tar
+
+# Jupyter
+.ipynb_checkpoints/
