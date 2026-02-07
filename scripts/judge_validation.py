@@ -18,13 +18,18 @@ from pathlib import Path
 from scipy.stats import spearmanr
 from sklearn.metrics import cohen_kappa_score
 
-# Add parent to path for imports
+# Add parent to path for imports (works both locally and in Docker)
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))  # local dev
+sys.path.insert(0, str(Path(__file__).parent.parent))  # Docker container
 
-from backend.services.judge import Judge
-from backend.services.ollama_client import OllamaClient
+try:
+    from backend.services.judge import Judge
+    from backend.services.ollama_client import OllamaClient
+except ModuleNotFoundError:
+    # Running inside Docker where backend code is at /app directly
+    from services.judge import Judge
+    from services.ollama_client import OllamaClient
 
 
 async def main(annotations_path: str):

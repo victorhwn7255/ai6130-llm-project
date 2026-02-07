@@ -20,14 +20,20 @@ from pathlib import Path
 from tqdm import tqdm
 from collections import defaultdict
 
-# Add parent to path for imports
+# Add parent to path for imports (works both locally and in Docker)
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))  # local dev
+sys.path.insert(0, str(Path(__file__).parent.parent))  # Docker container
 
-from backend.services.ollama_client import OllamaClient
-from backend.services.openai_client import OpenAIClient
-from backend.services.judge import Judge
+try:
+    from backend.services.ollama_client import OllamaClient
+    from backend.services.openai_client import OpenAIClient
+    from backend.services.judge import Judge
+except ModuleNotFoundError:
+    # Running inside Docker where backend code is at /app directly
+    from services.ollama_client import OllamaClient
+    from services.openai_client import OpenAIClient
+    from services.judge import Judge
 
 # MT-Bench 80 questions (download from FastChat repo or load local copy)
 MTBENCH_PATH = "data/raw/mt_bench_questions.jsonl"

@@ -14,12 +14,16 @@ Usage:
 import json
 from pathlib import Path
 
-# Add parent to path for imports
+# Add parent to path for imports (works both locally and in Docker)
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))  # local dev
+sys.path.insert(0, str(Path(__file__).parent.parent))  # Docker container
 
-from backend.services.router_model import RouterModel
+try:
+    from backend.services.router_model import RouterModel
+except ModuleNotFoundError:
+    # Running inside Docker where backend code is at /app directly
+    from services.router_model import RouterModel
 
 
 def _classify_failure(question, features, gap):
