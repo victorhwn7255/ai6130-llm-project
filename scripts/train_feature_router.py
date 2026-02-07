@@ -17,13 +17,18 @@ from pathlib import Path
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score, classification_report
 
-# Add parent to path for imports
+# Add parent to path for imports (works both locally and in Docker)
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent))
-sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
+sys.path.insert(0, str(Path(__file__).parent.parent))  # Docker container
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))  # local dev
 
 from utils.data_splits import load_and_split_data, verify_test_hash
-from backend.services.feature_extractor import extract_features, features_to_vector
+
+try:
+    from backend.services.feature_extractor import extract_features, features_to_vector
+except ModuleNotFoundError:
+    # Running inside Docker where backend code is at /app directly
+    from services.feature_extractor import extract_features, features_to_vector
 
 
 def main(data_path: str):

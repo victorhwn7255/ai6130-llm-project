@@ -18,13 +18,19 @@ import numpy as np
 from pathlib import Path
 from collections import defaultdict
 
-# Add parent to path for imports
+# Add parent to path for imports (works both locally and in Docker)
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))  # local dev
+sys.path.insert(0, str(Path(__file__).parent.parent))  # Docker container
 
-from backend.services.router_model import RouterModel
-from backend.services.judge import Judge
+try:
+    from backend.services.router_model import RouterModel
+    from backend.services.judge import Judge
+except ModuleNotFoundError:
+    # Running inside Docker where backend code is at /app directly
+    from services.router_model import RouterModel
+    from services.judge import Judge
+
 from utils.bootstrap import bootstrap_ci, bootstrap_pgr
 from utils.visualize import plot_pareto_curve, plot_domain_breakdown
 

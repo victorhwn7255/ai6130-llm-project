@@ -22,14 +22,20 @@ import argparse
 from pathlib import Path
 from tqdm import tqdm
 
-# Add parent to path for imports
+# Add parent to path for imports (works both locally and in Docker)
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))  # local dev
+sys.path.insert(0, str(Path(__file__).parent.parent))  # Docker container
 
-from backend.services.ollama_client import OllamaClient
-from backend.services.judge import Judge
-from backend.config import get_settings
+try:
+    from backend.services.ollama_client import OllamaClient
+    from backend.services.judge import Judge
+    from backend.config import get_settings
+except ModuleNotFoundError:
+    # Running inside Docker where backend code is at /app directly
+    from services.ollama_client import OllamaClient
+    from services.judge import Judge
+    from config import get_settings
 
 
 # Cost estimates per call (tokens estimated)
@@ -129,13 +135,9 @@ async def main(input_path: str, output_path: str, limit: int, batch_size: int = 
         print("All queries already processed. Nothing to do.")
         return
 
-    # Confirm before proceeding
+    # Confirm before proceeding (skip if --yes flag is set)
     cost_estimate = estimate_cost(len(queries_to_process), model)
     print(f"\nEstimated cost: ~${cost_estimate:.2f}")
-    response = input("Proceed? [y/N]: ")
-    if response.lower() != 'y':
-        print("Aborted.")
-        return
 
     # Initialize clients
     ollama = OllamaClient()

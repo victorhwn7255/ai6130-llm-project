@@ -14,12 +14,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3030:3000"
-    env_file: .env
-    depends_on:
-      backend:
-        condition: service_healthy
