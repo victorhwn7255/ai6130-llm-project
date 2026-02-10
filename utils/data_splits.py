@@ -29,14 +29,34 @@ def load_and_split_data(data_path: str) -> Tuple[
     The split is 70/15/15 with random_state=42 and stratified by labels.
     The test_hash is an MD5 hash of the sorted test queries for verification.
     """
-    # Load data
+    # Load data, filtering out garbage entries
     texts, labels = [], []
+    seen_queries = set()
+    skipped = {"error": 0, "short": 0, "no_response": 0, "duplicate": 0}
     with open(data_path) as f:
         for line in f:
             d = json.loads(line)
-            if "error" not in d:
-                texts.append(d["query"])
-                labels.append(d["label"])
+            if "error" in d:
+                skipped["error"] += 1
+                continue
+            query = d["query"].strip()
+            if len(query) < 10:
+                skipped["short"] += 1
+                continue
+            if not d.get("local_response", "").strip():
+                skipped["no_response"] += 1
+                continue
+            if query in seen_queries:
+                skipped["duplicate"] += 1
+                continue
+            seen_queries.add(query)
+            texts.append(query)
+            labels.append(d["label"])
+
+    total_skipped = sum(skipped.values())
+    print(f"Data cleaning: kept {len(texts)}, skipped {total_skipped} "
+          f"(error={skipped['error']}, short={skipped['short']}, "
+          f"no_response={skipped['no_response']}, duplicate={skipped['duplicate']})")
 
     # Split: 70/15/15 with fixed random state
     train_texts, temp_texts, train_labels, temp_labels = train_test_split(
