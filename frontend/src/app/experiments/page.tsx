@@ -17,6 +17,8 @@ const experiments: {
   name: string
   description: string
   cost?: number
+  disabled?: boolean
+  disabledReason?: string
 }[] = [
   {
     id: "e1_baselines",
@@ -29,6 +31,8 @@ const experiments: {
     name: "E2 - Judge Validation",
     description: "Validate GPT-4 judge against human annotations",
     cost: 0.15,
+    disabled: true,
+    disabledReason: "Requires manual human annotations. Skipped per MT-Bench paper validation.",
   },
   {
     id: "e3_train_router",
@@ -88,6 +92,8 @@ export default function ExperimentsPage() {
               name={exp.name}
               description={exp.description}
               estimatedCost={exp.cost}
+              disabled={exp.disabled}
+              disabledReason={exp.disabledReason}
               onSelect={() => setSelectedExperiment(exp.id)}
               isSelected={selectedExperiment === exp.id}
               renderResults={(results) => (

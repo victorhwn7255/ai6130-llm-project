@@ -24,7 +24,6 @@ export default function RoutingBadge({ routing, cost }: RoutingBadgeProps) {
       >
         <Icon className="w-3 h-3" />
         {isLocal ? "Local" : "Cloud"}
-        <span className="opacity-70">({(routing.confidence * 100).toFixed(0)}%)</span>
       </span>
       <span className="text-[var(--muted-foreground)]">
         {formatLatency(routing.router_latency_ms)}

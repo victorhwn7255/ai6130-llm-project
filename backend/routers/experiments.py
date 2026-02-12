@@ -36,7 +36,7 @@ EXPERIMENT_RESULTS = {
     "e3_label_data": ["data/labeled_data.json"],
     "e3_train_router": ["data/results/router_accuracy.json"],
     "e3_train_feature": ["data/results/feature_router_accuracy.json"],
-    "e3_routellm": ["data/results/routellm_baseline.json"],
+    "e3_routellm": ["data/results/routellm_accuracy.json"],
     "e4_evaluation": ["data/results/evaluation_results.json"],
     "e6_error_analysis": ["data/results/error_analysis.json"],
 }

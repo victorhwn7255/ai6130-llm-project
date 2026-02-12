@@ -15,6 +15,8 @@ interface ExperimentCardProps {
   estimatedCost?: number
   onSelect?: () => void
   isSelected?: boolean
+  disabled?: boolean
+  disabledReason?: string
   renderResults?: (results: Record<string, unknown>) => ReactNode
 }
 
@@ -25,6 +27,8 @@ export default function ExperimentCard({
   estimatedCost,
   onSelect,
   isSelected,
+  disabled,
+  disabledReason,
   renderResults,
 }: ExperimentCardProps) {
   const { status, progress, results, error, run, isRunning } = useExperiment(id)
@@ -39,9 +43,11 @@ export default function ExperimentCard({
   return (
     <div
       className={`bg-[var(--card)] border rounded-lg overflow-hidden transition-colors ${
-        isSelected
-          ? "border-[var(--cloud)]"
-          : "border-[var(--border)] hover:border-[var(--accent)]"
+        disabled
+          ? "opacity-50 border-[var(--border)]"
+          : isSelected
+            ? "border-[var(--cloud)]"
+            : "border-[var(--border)] hover:border-[var(--accent)]"
       }`}
     >
       {/* Header */}
@@ -52,8 +58,19 @@ export default function ExperimentCard({
             <p className="text-sm text-[var(--muted-foreground)]">
               {description}
             </p>
+            {disabled && disabledReason && (
+              <p className="text-xs text-yellow-500 mt-1 italic">
+                {disabledReason}
+              </p>
+            )}
           </div>
-          <StatusBadge status={status} />
+          {disabled ? (
+            <span className="px-2 py-0.5 rounded text-xs bg-[var(--muted)] text-[var(--muted-foreground)]">
+              Optional
+            </span>
+          ) : (
+            <StatusBadge status={status} />
+          )}
         </div>
 
         {/* Progress bar (only when running) */}
@@ -107,7 +124,7 @@ export default function ExperimentCard({
 
             <button
               onClick={handleRun}
-              disabled={isRunning}
+              disabled={isRunning || disabled}
               className="flex items-center gap-1 px-3 py-1.5 rounded bg-[var(--cloud)] text-white text-sm hover:bg-[var(--cloud)]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isRunning ? (

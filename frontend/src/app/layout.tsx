@@ -3,7 +3,7 @@ import "./globals.css"
 import Navbar from "@/components/Navbar"
 
 export const metadata: Metadata = {
-  title: "Hybrid LLM Router",
+  title: "AI6130 LLM Project",
   description: "Intelligent routing between local and cloud LLMs",
 }
 

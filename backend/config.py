@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     # Router
     router_model_path: str = "data/models/distilbert_router"
-    routing_threshold: float = 0.6
+    routing_threshold: float = 0.7
 
     # Cost (per 1M tokens)
     cloud_input_cost_per_1m: float = 0.15

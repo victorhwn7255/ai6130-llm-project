@@ -9,7 +9,7 @@ interface ComparePanelProps {
   score: number
   latencyMs: number
   tokens: number
-  isWinner: boolean
+  isWinner?: boolean
   judgeReasoning?: string
 }
 
@@ -19,7 +19,6 @@ export default function ComparePanel({
   score,
   latencyMs,
   tokens,
-  isWinner,
 }: ComparePanelProps) {
   const isLocal = type === "local"
   const Icon = isLocal ? Cpu : Cloud
@@ -29,11 +28,9 @@ export default function ComparePanel({
   return (
     <div
       className={`bg-[var(--card)] border rounded-lg overflow-hidden ${
-        isWinner
-          ? isLocal
-            ? "border-[var(--local)] shadow-[0_0_20px_rgba(34,197,94,0.1)]"
-            : "border-[var(--cloud)] shadow-[0_0_20px_rgba(59,130,246,0.1)]"
-          : "border-[var(--border)]"
+        isLocal
+          ? "border-[var(--local)]/30"
+          : "border-[var(--cloud)]/30"
       }`}
     >
       {/* Header */}
@@ -43,11 +40,9 @@ export default function ComparePanel({
           <span className="font-medium">
             {isLocal ? "Local (Phi-3)" : "Cloud (GPT-4o-mini)"}
           </span>
-          {isWinner && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--warning)]/10 text-[var(--warning)]">
-              Winner
-            </span>
-          )}
+          <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--muted)] text-[var(--muted-foreground)]">
+            {isLocal ? "Free" : "Paid"}
+          </span>
         </div>
         <div className="flex items-center gap-3 text-sm text-[var(--muted-foreground)]">
           <span className="flex items-center gap-1 font-mono">
