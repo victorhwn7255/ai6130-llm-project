@@ -24,6 +24,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+/* Pointer cursor for all clickable elements */
+button:not(:disabled),
+a,
+[role="button"] {
+  cursor: pointer;
+}
+
 /* Monospace for metrics */
 .font-mono {
   font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Monaco, monospace;

@@ -5,6 +5,7 @@ import { useChat } from "@/hooks/useChat"
 import ChatInput from "@/components/ChatInput"
 import ChatMessage from "@/components/ChatMessage"
 import CostTracker from "@/components/CostTracker"
+import SamplePrompts from "@/components/SamplePrompts"
 
 export default function ChatPage() {
   const { messages, isLoading, error, send, stats } = useChat()
@@ -23,7 +24,7 @@ export default function ChatPage() {
           <div className="max-w-3xl mx-auto space-y-4">
             {messages.length === 0 && (
               <div className="text-center py-20">
-                <h2 className="text-2xl font-semibold mb-2">Hybrid LLM Router</h2>
+                <h2 className="text-2xl font-semibold mb-2">LLM Edge-Cloud Intelligent Router</h2>
                 <p className="text-[var(--muted-foreground)] mb-8">
                   Intelligent routing between local and cloud LLMs
                 </p>
@@ -46,8 +47,8 @@ export default function ChatPage() {
                   </div>
                 </div>
                 <p className="text-[var(--muted-foreground)] mt-8 text-sm">
-                  Try: &quot;What is the capital of France?&quot; vs &quot;Write a recursive
-                  Fibonacci with memoization&quot;
+                  Try: &quot;Who painted the Mona Lisa?&quot; vs &quot;Explain
+                  how solar panels convert sunlight into electricity&quot;
                 </p>
               </div>
             )}
@@ -94,14 +95,17 @@ export default function ChatPage() {
       </div>
 
       {/* Sidebar */}
-      <div className="w-64 border-l border-[var(--border)] p-4 hidden lg:block">
-        <CostTracker
-          totalQueries={stats.totalQueries}
-          localCount={stats.localCount}
-          cloudCount={stats.cloudCount}
-          totalCost={stats.totalCost}
-          totalSaved={stats.totalSaved}
-        />
+      <div className="w-72 border-l border-[var(--border)] p-4 hidden lg:block overflow-y-auto">
+        <div className="space-y-4">
+          <CostTracker
+            totalQueries={stats.totalQueries}
+            localCount={stats.localCount}
+            cloudCount={stats.cloudCount}
+            totalCost={stats.totalCost}
+            totalSaved={stats.totalSaved}
+          />
+          <SamplePrompts onSend={send} isLoading={isLoading} />
+        </div>
       </div>
     </div>
   )
