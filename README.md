@@ -1,6 +1,6 @@
 # Intelligent LLM Router for Edge-Cloud Inference
 
-A trained LLM-based routing system that automatically decides whether a user query should be handled by a small, free, local model (Phi-3, 3.8B) or escalated to a larger, paid cloud model (GPT-4o-mini) — achieving near-cloud quality at half the cost.
+A trained transformer-based routing system that automatically decides whether an input prompt (can be either H2A or A2A) should be handled by a small, local model (free) or escalated to a larger, frontier cloud model (expensive) — achieving near-frontier quality at less than half the cost.
 
 **Key Results:** 56.8% Performance Gap Recovery | 55% Cost Savings | AUROC 0.8
 
